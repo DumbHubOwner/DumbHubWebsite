@@ -48,11 +48,17 @@
       margin-top: 20px;
     }
 
-    #backMessage {
+    #keyContainer {
       display: none;
       color: white;
       font-size: 20px;
       margin-top: 20px;
+    }
+
+    #timer {
+      color: yellow;
+      font-size: 18px;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -60,9 +66,23 @@
   <h1>Dumbhub Key</h1>
   <a href="https://link-center.net/553430/fatality-key-link1" class="btn" id="getKeyBtn" onclick="startLoading()">Get Key</a>
   <div id="loading">Loading, please wait...</div>
-  <div id="backMessage">You're back!</div>
+  <div id="keyContainer">
+    <div id="key"></div>
+    <div id="timer"></div>
+  </div>
 
   <script>
+    // Function to generate a random 6-letter key
+    function generateKey() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+      let result = '';
+      for (let i = 0; i < 6; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+
+    // Function to start loading and redirect after 2 seconds
     function startLoading() {
       // Show loading message and hide the button
       document.getElementById("loading").style.display = "block";
@@ -70,7 +90,7 @@
 
       // Redirect after a brief delay to simulate loading
       setTimeout(function() {
-        // Redirect to the link (you can adjust the URL here)
+        // Redirect to the link
         window.location.href = "https://link-center.net/553430/fatality-key-link1";
       }, 2000);  // Adjust the delay as necessary (2 seconds here)
     }
@@ -78,9 +98,29 @@
     // Check if the user has come back after the redirect
     window.onload = function() {
       if (document.referrer) {
-        // Show "You're back!" message after redirect
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("backMessage").style.display = "block";
+        // Generate a key and set a 24-hour expiration time
+        const key = generateKey();
+        const expirationDate = new Date();
+        expirationDate.setHours(expirationDate.getHours() + 24); // 24 hours from now
+
+        // Display the key and timer
+        document.getElementById("key").innerHTML = "Your Key: " + key;
+        document.getElementById("keyContainer").style.display = "block";
+
+        // Set the timer to countdown from 24 hours
+        const timerInterval = setInterval(function() {
+          const now = new Date();
+          const timeLeft = expirationDate - now;
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            document.getElementById("timer").innerHTML = "Your key has expired.";
+          } else {
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            document.getElementById("timer").innerHTML = `Time left: ${hours}h ${minutes}m ${seconds}s`;
+          }
+        }, 1000); // Update every second
       }
     };
   </script>
