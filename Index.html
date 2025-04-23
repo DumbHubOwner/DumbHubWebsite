@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fatality Key Link</title>
+  <title>Dumbhub Key Link</title>
   <style>
     body {
       margin: 0;
@@ -13,6 +13,8 @@
       justify-content: center;
       align-items: center;
       font-family: Arial, sans-serif;
+      flex-direction: column;
+      text-align: center;
     }
 
     .btn {
@@ -30,9 +32,48 @@
     .btn:hover {
       background-color: darkred;
     }
+
+    #loading {
+      display: none;
+      color: white;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    #backMessage {
+      display: none;
+      color: white;
+      font-size: 20px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
-  <a href="https://link-center.net/553430/fatality-key-link1" class="btn">Get Key</a>
+  <a href="https://link-center.net/553430/fatality-key-link1" class="btn" id="getKeyBtn" onclick="startLoading()">Get Key</a>
+  <div id="loading">Loading, please wait...</div>
+  <div id="backMessage">You're back!</div>
+
+  <script>
+    function startLoading() {
+      // Show loading message and hide the button
+      document.getElementById("loading").style.display = "block";
+      document.getElementById("getKeyBtn").style.display = "none";
+
+      // Redirect after a brief delay to simulate loading
+      setTimeout(function() {
+        // Redirect to the link (you can adjust the URL here)
+        window.location.href = "https://link-center.net/553430/fatality-key-link1";
+      }, 2000);  // Adjust the delay as necessary (2 seconds here)
+    }
+
+    // Check if the user has come back after the redirect
+    window.onload = function() {
+      if (document.referrer) {
+        // Show "You're back!" message after redirect
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("backMessage").style.display = "block";
+      }
+    };
+  </script>
 </body>
 </html>
